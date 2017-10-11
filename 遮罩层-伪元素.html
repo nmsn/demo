@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+    <style>
+    button{
+      width: 50px;
+      height: 25px;
+      background: skyblue;
+    }
+    .pop{
+      width: 200px;
+      height: 200px;
+      background-color: rgba(255,255,100,1);
+      display: none;
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      margin-top: -100px;
+      margin-left: -100px;
+      z-index: 9999;
+    }
+    .pop::before{
+      content: '';
+      position: fixed;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      background: rgba(0,0,0,.5);
+      z-index: -100;
+    }
+    </style>
+  </head>
+  <body>
+    <button>ok</button>
+    <div class="pop">
+    </div>
+    <script>
+    // 遮罩层出现在元素上方
+    // Z轴不易控制
+    // 伪元素无法绑定js事件，但影响鼠标交互
+    var button = document.getElementsByTagName('button')[0];
+    button.addEventListener('click', function(){
+      var pop = document.getElementsByClassName('pop')[0];
+      // pop.setAttribute('display','block');
+      pop.style.display = 'block';
+    })
+    </script>
+  </body>
+</html>
