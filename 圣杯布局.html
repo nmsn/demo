@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <title></title>
+  <style>
+    .main {
+      float: left;
+      width: 100%;
+      height: 200px;
+      background-color: #9c0101;
+    }
+
+    .left {
+      float: left;
+      height: 200px;
+      width: 100px;
+      margin-left: -100%;
+      /*使对象向左移动一段距离，这段距离等于父体的内容宽度*/
+      background-color: #bd4147;
+
+    }
+
+    .right {
+      float: left;
+      height: 200px;
+      width: 200px;
+      margin-left: -200px;
+      background-color: #416f96;
+    }
+    /*左右两列定位了，main还没有定位，
+    所以会出现左右列覆盖主列main的情况，
+    这时我们给容器container添加左右内边距padding-left和padding-right，
+    成功定位主列main*/
+    .container {
+      padding-left: 120px;
+      padding-right: 220px;
+    }
+
+    .left {
+      position: relative;
+      left: -120px;
+    }
+
+    .right {
+      position: relative;
+      right: -220px;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <div class="main"></div>
+    <div class="left"></div>
+    <div class="right"></div>
+  </div>
+</body>
+
+</html>
