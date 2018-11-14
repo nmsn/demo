@@ -4,7 +4,6 @@ var container = document.querySelector("#container");
 const containerWidth = container.offsetWidth;
 const containerHeight = container.offsetHeight;
 
-// var text = document.querySelector(".text");
 obj.addEventListener('touchstart', function(event) {
     event.preventDefault();
     // 如果这个元素的位置内只有一个手指的话
@@ -13,10 +12,6 @@ obj.addEventListener('touchstart', function(event) {
     // 把元素放在手指所在的位置 
     var disX = touch.pageX - obj.offsetLeft; // 点击点和点击物体边距离差值x
     var disY = touch.pageY - obj.offsetTop; // 点击点和点击物体边距离差值y
-
-    // var box = document.querySelector(".box");
-
-    // var width = box.clientWidth - obj.offsetWidth;
 
     obj.addEventListener('touchmove',move);
 
