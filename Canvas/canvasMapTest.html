@@ -6,23 +6,33 @@
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>CanvasMapTest</title>
   <style>
+    #container {
+      position: relative;
+      width: 500px;
+      height: 350px;
+      background: rgb(211, 211, 211);
+      overflow: hidden;
+    }
     #map {
+      position: relative;
       width: 1000px;
       height: 600px;
       /* background: grey; */
-      border: 1px solid black;
       background: url('map.jpg');
     }
   </style>
 </head>
 <body>
-  <canvas id="map" width="500" height="300"></canvas>
-  <button>左</button>
+  <div id="container">
+    <canvas id="map" width="500" height="300"></canvas>
+  </div>
+  <button>开始</button>
 </body>
+<!-- <script src="drag.js" /> -->
 <script>
 
   let index = 0;
-  const action
+  // const action
   const icon = new Image();
   icon.src = 'icon.png';
   icon.width = '50';
@@ -55,12 +65,8 @@
       if (this.x + this.vx + this.radius*2 > canvas.width || this.x + this.vx < 0) {
         this.vx = -this.vx;
       }
-          }
+    }
   };
-
-  function clickDraw() {
-
-  }
 
   function draw() {
     ctx.clearRect(0,0, canvas.width, canvas.height);
@@ -71,14 +77,78 @@
   }
 
   canvas.addEventListener('mouseover', function(e){
+    console.log(0)
     raf = window.requestAnimationFrame(draw);
   });
 
   canvas.addEventListener('mouseout', function(e){
+    console.log(2)
     window.cancelAnimationFrame(raf);
+  });
+
+  const button = document.getElementsByTagName("button")[0];
+
+  button.addEventListener('click', function(e){
+    console.log(0)
+    raf = window.requestAnimationFrame(draw);
   });
 
 
   ball.draw();
+</script>
+
+<script>
+  var obj = document.querySelector("#map");
+var container = document.querySelector("#container");
+
+const containerWidth = container.offsetWidth;
+const containerHeight = container.offsetHeight;
+
+// var text = document.querySelector(".text");
+obj.addEventListener('touchstart', function(event) {
+    event.preventDefault();
+    // 如果这个元素的位置内只有一个手指的话
+    if (event.targetTouches.length == 1) {
+    var touch = event.targetTouches[0];
+    // 把元素放在手指所在的位置 
+    var disX = touch.pageX - obj.offsetLeft; // 点击点和点击物体边距离差值x
+    var disY = touch.pageY - obj.offsetTop; // 点击点和点击物体边距离差值y
+
+    // var box = document.querySelector(".box");
+
+    // var width = box.clientWidth - obj.offsetWidth;
+
+    obj.addEventListener('touchmove',move);
+
+    function move(event){
+      var touch2 = event.targetTouches[0];
+      var left = touch2.pageX - disX;
+      var top = touch2.pageY - disY;
+      var objWidth = obj.offsetWidth;
+      var objHeight = obj.offsetHeight;
+      if(left > 0){
+          left = 0;
+      };
+      if(left + objWidth < containerWidth){
+          left = containerWidth - objWidth;
+      };
+      if(top > 0){
+          top = 0;
+      };
+      if(top + objHeight < containerHeight){
+          top = containerHeight - objHeight;
+      };
+      obj.style.left = left + 'px';
+      obj.style.top = top + 'px';
+    };
+
+    obj.addEventListener('touchend',chend);
+
+    function chend(event){
+      obj.removeEventListener('touchmove',move);
+      obj.removeEventListener('touchend',chend);
+    };
+  };
+}, false);
 </script>
 </html>
