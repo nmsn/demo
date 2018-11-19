@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>CanvasMapTest</title>
+  <style>
+    #container {
+      position: relative;
+      width: 500px;
+      height: 350px;
+      background: rgb(211, 211, 211);
+      overflow: hidden;
+    }
+    #map {
+      position: relative;
+      width: 1000px;
+      height: 600px;
+      background: url('map.jpg');
+    }
+  </style>
+</head>
+<body>
+  <div id="container">
+    <canvas id="map" width="500" height="300"></canvas>
+  </div>
+  <button>开始</button>
+</body>
+<script src="canvasTrap.js"></script>
+<script src="drag.js"></script>
+
+</html>

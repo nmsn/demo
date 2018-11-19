@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>CanvasMapTest</title>
+  <style>
+    #container {
+      position: relative;
+      width: 500px;
+      height: 350px;
+      background: rgb(211, 211, 211);
+      overflow: hidden;
+    }
+    #map {
+      position: relative;
+      width: 1000px;
+      height: 600px;
+      background: url('map.jpg');
+    }
+    #mark {
+      position: relative;
+      background: url('icon.png');
+      background-size: cover;
+      top: 0;
+      left: 0;
+      width: 30px;
+      height: 30px;
+      border-radius: 50px;
+      transition: all .5s .5s ease-out;
+    }
+  </style>
+</head>
+<body>
+  <div id="container">
+    <div id="map">
+      <div id="mark"></div>
+    </div>
+  </div>
+  <button id="button">开始</button>
+</body>
+<script src="drag.js"></script>
+<script>
+
+  const button = document.querySelector('#button');
+  const mark = document.querySelector('#mark');
+  // const container = document.querySelector('#container');
+
+  let index = 0;
+  
+  const stepArr = [
+    {
+      top: '20%',
+      left: '10%',
+    },
+    {
+      top: '30%',
+      left: '20%',
+    },
+    {
+      top: '50%',
+      left: '70%',
+    },
+  ];
+
+  button.addEventListener('click', function() {
+    mark.style.left = stepArr[index].left;
+    mark.style.top = stepArr[index].top;
+
+    const containerLeftCenter = container.offsetLeft + container.offsetWidth / 2;
+    const containerTopCenter = container.offsetTop + container.offsetHeight / 2;
+    console.log(mark.offsetTop, mark.offsetLeft);
+    console.log(containerLeftCenter, containerTopCenter);
+    index += 1;
+  });
+  mark.addEventListener('transitionend', function(e) {
+    console.log(e);
+  });
+
+</script>
+
+</html>
