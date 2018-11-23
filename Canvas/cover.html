@@ -9,6 +9,14 @@
     body {
       padding: 0;
       margin: 0;
+      width: 375px;
+      height: 667px;
+      position: relative;
+    }
+    .container {
+      width: 375px;
+      height: 667px;
+      position: relative;
     }
     header {
       position: relative;
@@ -44,33 +52,84 @@
       /* background: red; */
       background: url('map.jpg');
     }
+    .button {
+      position: relative;
+      left: 50%;
+      transform: translate(-50%);
+      width: 50px;
+      height: 50px;
+      background: red;
+    }
+    .point {
+      position: absolute;
+      background: url('icon.png');
+      background-size: cover;
+      /* top: 0;
+      left: 0; */
+      width: 30px;
+      height: 30px;
+      border-radius: 50px;
+    }
+
+    .point-1 {
+      top: 10%;
+      left: 10%;
+    }
+    .point-2 {
+      top: 15%;
+      left: 15%;
+    }
+    .point-3 {
+      top: 20%;
+      left: 20%;
+    }
+    .point-4 {
+      top: 25%;
+      left: 25%;
+    }
+    .point-5 {
+      top: 30%;
+      left: 30%;
+    }
+    .point-6 {
+      top: 35%;
+      left: 35%;
+    }
+
   </style>
 </head>
 <body>
-
-  <header>
-    <img />
-  </header>
-
-  <main>
-    <div class="map"></div>
-  </main>
-
-  <footer>
-    <img />
-  </footer>
-
+  <div class="container">
+    <header>
+      <img />
+    </header>
+  
+    <main>
+      <div class="map">
+        <div class="point point-1" data-point="1"></div>
+        <div class="point point-2" data-point="2"></div>
+        <div class="point point-3" data-point="3"></div>
+        <div class="point point-4" data-point="4"></div>
+        <div class="point point-5" data-point="5"></div>
+        <div class="point point-6" data-point="6"></div>
+      </div>
+    </main>
+  
+    <footer>
+      <div class="button"></div>
+    </footer>
+  </div>
   <script>
-    // const main = document.querySelector("main");
-    // main.addEventListener('touchstart', function() {
-    //   console.log(1);
-    // });
-    // main.addEventListener('touchmove', function() {
-    //   console.log(2);
-    // });
-    // main.addEventListener('touchend', function() {
-    //   console.log(3);
-    // });
+    const button = document.querySelector('.button');
+    button.addEventListener('click', function() {
+      console.log('click');
+    });
+
+    const points = document.getElementsByClassName('map')[0];
+    console.log(points);
+    points.addEventListener('click', function(e) {
+      console.log(e.target, 1);
+    });
 
     var obj = document.querySelector(".map");
     var container = document.querySelector("main");
@@ -80,7 +139,7 @@
 
     obj.addEventListener('touchstart', function(event) {
         event.preventDefault();
-        console.log(1);
+        console.log(event.target, 2);
         // 如果这个元素的位置内只有一个手指的话
         if (event.targetTouches.length == 1) {
         var touch = event.targetTouches[0];
@@ -89,7 +148,6 @@
         var disY = touch.pageY - obj.offsetTop; // 点击点和点击物体边距离差值y
 
         obj.addEventListener('touchmove',move);
-        console.log(2);
         function move(event){
           var touch2 = event.targetTouches[0];
           var left = touch2.pageX - disX;
@@ -120,7 +178,7 @@
           obj.removeEventListener('touchend',chend);
         };
       };
-    }, false);
+    });
   </script>
 </body>
 </html>
