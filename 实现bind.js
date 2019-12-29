@@ -18,7 +18,8 @@ Function.prototype.bind2 = function(context) {
       args.concat(bindArgs),
     );
   };
-
+  
+  // TODO 意义
   fNOP.prototype = this.prototype;
   fBound.prototype = new fNOP();
   return fBound;
