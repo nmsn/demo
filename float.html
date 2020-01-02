@@ -1,54 +1,52 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>Document</title>
-</head>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+    <style>
+      .container {
+        padding: 20px;
+        background-color: grey;
+      }
 
-<style>
-  .container {
-    padding: 20px;
-    background-color: grey;
-  }
+      /* 方法一 */
+      /* .container {
+      overflow: hidden;
+      zoom: 1;
+    } */
 
-  /* 方法一 */
-  /* .container {
-    overflow: hidden;
-    zoom: 1;
-  } */
+      /* 方法二 */
+      /* .container:after {
+      display: block;
+      content: '';
+      clear: both;
+    } */
 
-  /* 方法二 */
-  /* .container:after {
-    display: block;
-    content: '';
-    clear: both;
-  } */
-  
+      .red,
+      .blue {
+        width: 100px;
+        height: 100px;
+      }
 
-  .red,
-  .blue {
-    width: 100px;
-    height: 100px;
-  }
-  
-  .red {
-    background-color: red;
-    float: left;
-  }
-  
-  .blue {
-    background-color: blue;
-    float: left;
-  }
-</style>
-<body>
-  <div class="container">
-    <div class="red"></div>
-    <div class="blue"></div>
-    <!-- 方法三 -->
-    <!-- <div style="clear:both;"></div> -->
-  </div>
-</body>
+      .red {
+        background-color: red;
+        float: left;
+      }
+
+      .blue {
+        background-color: blue;
+        float: left;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="red"></div>
+      <div class="blue"></div>
+      <!-- 方法三 -->
+      <!-- <div style="clear:both;"></div> -->
+    </div>
+  </body>
 </html>
