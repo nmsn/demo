@@ -122,6 +122,7 @@ function clone(target, map = new WeakMap()) {
     }
 
     // 防止循环引用
+    // ES5以前可以使用数组来解决
     if (map.get(target)) {
         return map.get(target);
     }
@@ -161,3 +162,5 @@ function clone(target, map = new WeakMap()) {
  * 来源：掘金
  * 著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。
  */
+
+// 解决递归爆栈使用循环替代递归，对拷贝对象看作一个二叉树，使用广度优先遍历
