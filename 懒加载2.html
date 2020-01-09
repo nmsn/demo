@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+    <style>
+      .placeholder {
+        width: 200px;
+        height: 800px;
+        background-color: grey;
+      }
+      .img {
+        display: block;
+        width: 200px;
+        height: 200px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="placeholder"></div>
+    <div class="img-container">
+      <img class="img" data-src="./Canvas/map.jpg" />
+      <img class="img" data-src="./Canvas/map2.jpg" />
+      <img class="img" data-src="./Canvas/map3.jpg" />
+      <img class="img" data-src="./Canvas/map4.jpg" />
+      <img class="img" data-src="./Canvas/map5.jpg" />
+    </div>
+  </body>
+  <script>
+    const images = document.querySelectorAll('[data-src]')
+    const config = {
+        rootMargin: '0px',
+        threshold: 0
+    };
+    
+    let observer = new IntersectionObserver((entries, self) => {
+        entries.forEach(entry => {
+            if(entry.isIntersecting){
+             // 加载图像
+             preloadImage(entry.target);
+             // 解除观察
+               self.unobserve(entry.target)
+            }
+        })
+    }, config);
+
+    images.forEach(image => {
+      observer.observe(image);
+    });
+
+    function preloadImage(img) {
+      const src = img.dataset.src
+      if (!src) { return; }
+      img.src = src;
+    }
+  </script>
+</html>

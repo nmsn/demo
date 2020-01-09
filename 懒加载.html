@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+    <style>
+      .placeholder {
+        width: 200px;
+        height: 800px;
+        background-color: grey;
+      }
+      .img {
+        display: block;
+        width: 200px;
+        height: 200px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="placeholder"></div>
+    <div class="img-container">
+      <img class="img" data-src="./Canvas/map.jpg" />
+      <img class="img" data-src="./Canvas/map2.jpg" />
+      <img class="img" data-src="./Canvas/map3.jpg" />
+      <img class="img" data-src="./Canvas/map4.jpg" />
+      <img class="img" data-src="./Canvas/map5.jpg" />
+    </div>
+    
+  </body>
+  <script>
+    const lazy = el => {
+      let scrTop = getTop();
+      console.log(scrTop)
+      let windowHeight = document.documentElement.clientHeight;
+
+      function getTop() {
+        return document.documentElement.scrollTop || document.body.scrollTop;
+      }
+
+      function getOffset(node) {
+        return node.getBoundingClientRect().top + scrTop;
+      }
+
+      function inView(node) {
+        console.log(node);
+        // 设立阈值
+        const threshold = 0;
+        const viewTop = scrTop;
+        const viewBot = viewTop + windowHeight;
+
+        const nodeTop = getOffset(node);
+        const nodeBot = nodeTop + node.offsetHeight;
+
+        const offset = (threshold / 100) * windowHeight;
+        console.log(nodeBot >= viewTop - offset, nodeTop <= viewBot + offset);
+        return nodeBot >= viewTop - offset && nodeTop <= viewBot + offset;
+      }
+
+      function check(node) {
+        let el = document.querySelector(node);
+        let images = [...el.querySelectorAll("img")];
+        images.forEach(img => {
+          if (inView(img)) {
+            img.src = img.dataset.src;
+          }
+        });
+      }
+      check(el);
+    };
+
+    window.onscroll = function() {
+      lazy(".img-container");
+    };
+  </script>
+</html>
