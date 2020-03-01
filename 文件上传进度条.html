@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      #bar-warp {
+        width: 500px;
+        height: 30px;
+        border: 1px solid green;
+      }
+      #bar {
+        width: 0px;
+        height: 30px;
+        background: green;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="bar-warp">
+      <div id="bar"></div>
+    </div>
+    <span id="precent"></span><br />
+    <input type="file" name="pic" multiple onchange="upfile2();" />
+  </body>
+  <script type="text/javascript">
+    function upfile() {
+      var arr = document.getElementsByTagName("input")[0].files;
+      console.log(arr);
+      var pic = document.getElementsByTagName("input")[0].files[0];
+      var fd = new FormData();
+      var xhr = new XMLHttpRequest();
+      xhr.open("post", "01.php", true);
+
+      xhr.onreadystatechange = function() {
+        //readystate为4表示请求已完成并就绪
+        if (this.readyState == 4) {
+          document.getElementById("precent").innerHTML = this.responseText;
+          //在进度条下方插入百分比
+        }
+      };
+
+      xhr.upload.onprogress = function(ev) {
+        //如果ev.lengthComputable为true就可以开始计算上传进度
+        //上传进度 = 100* ev.loaded/ev.total
+        if (ev.lengthComputable) {
+          var precent = (100 * ev.loaded) / ev.total;
+          console.log(precent);
+          //更改进度条，及百分比
+          document.getElementById("bar").style.width = precent + "%";
+          document.getElementById("precent").innerHTML =
+            Math.floor(precent) + "%";
+        }
+      };
+      fd.append("pic", pic);
+      xhr.send(fd);
+    }
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <script>
+    function upfile2() {
+      var pic = document.getElementsByTagName("input")[0].files[0];
+      var fd = new FormData();
+
+      fd.append("pic", pic);
+
+      var config = {
+        onUploadProgress: progressEvent => {
+          var complete =
+            (((progressEvent.loaded / progressEvent.total) * 100) | 0) + "%";
+          console.log(complete);
+        },
+      };
+      axios.post(`api/uploadFile`, pic, config).then(res => {
+        if (res.data.status === "success") {
+          console.log("上传成功");
+        }
+      });
+    }
+  </script>
+</html>
