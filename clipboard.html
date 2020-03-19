@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>textarea
+<body>
+  <button id="button">复制</button>
+  <textarea style="width: 200px;height: 200px"></textarea>
+</body>
+<script>
+
+var button = document.getElementById('button');
+var textArea;
+
+button.onclick = function () {
+  createTextArea('手动创建元素实现粘贴板');
+  selectText();
+  copyToClipboard();
+};
+
+
+// 判断是不是ios端
+function isOS() {
+  return navigator.userAgent.match(/ipad|iphone/i);
+}
+
+function createTextArea(text) {
+  textArea = document.createElement('textArea');
+  textArea.value = text;
+  document.body.appendChild(textArea);
+}
+
+function selectText() {
+  var range,
+      selection;
+
+  if (isOS()) {
+    range = document.createRange();
+    range.selectNodeContents(textArea);
+    selection = window.getSelection();
+    selection.removeAllRanges();
+    selection.addRange(range);
+    textArea.setSelectionRange(0, 999999);
+  } else {
+    textArea.select();
+  }
+}
+
+
+
+//复制到剪贴板
+function copyToClipboard() {
+  try{
+    if(document.execCommand("Copy")){ // cut为剪切
+      alert("复制成功！");
+    }else{
+      alert("复制失败！请手动复制！");
+    }
+  }catch(err){
+    alert("复制错误！请手动复制！")
+  }
+
+  document.body.removeChild(textArea);
+}
+
+
+document.addEventListener('copy', function (event) {
+    var clipboardData = event.clipboardData || window.clipboardData;
+    console.log(clipboardData);
+    if (!clipboardData) { return; }
+    var text = window.getSelection().toString();
+    if (text) {
+        event.preventDefault();
+        clipboardData.setData('text/plain', text + '\n\n版权信息');
+    }
+});
+
+</script>
+</html>
