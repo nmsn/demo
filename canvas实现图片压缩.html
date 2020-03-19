@@ -14,7 +14,7 @@
     const updateDom = document.getElementsByClassName("update")[0];
     updateDom.addEventListener("change", e => {
       const file = e.target.files[0];
-      
+
       // 图片转成base64
       const reader = new FileReader();
       reader.readAsDataURL(file);
@@ -26,11 +26,11 @@
         fullImg.onload = () => {
           // 原图插入
           document.getElementById("ad").appendChild(fullImg);
-          
+
           // 创建canvas元素
           let canvas = document.createElement("canvas");
           let context = canvas.getContext("2d");
-          
+
           const canvasSize = { x: 200, y: 200 };
 
           // 限制画布和元素大小，画布即为最后转换成的图片
@@ -38,14 +38,49 @@
           canvas.height = canvasSize.y;
           context.drawImage(fullImg, 0, 0, canvasSize.x, canvasSize.y);
           const result = canvas.toDataURL();
+          console.log(dataURLtoBlob(result));
 
           var thumbnail = document.createElement("img");
           thumbnail.src = result;
           thumbnail.onload = () => {
+            console.log(thumbnail);
             document.getElementById("ad").appendChild(thumbnail);
+            funDownload(thumbnail, '123.png');
           };
         };
       };
     });
+
+    function dataURLtoBlob(dataurl) {
+      var arr = dataurl.split(","),
+        mime = arr[0].match(/:(.*?);/)[1],
+        bstr = atob(arr[1]),
+        n = bstr.length,
+        u8arr = new Uint8Array(n);
+      while (n--) {
+        u8arr[n] = bstr.charCodeAt(n);
+      }
+      return new Blob([u8arr], { type: mime });
+    }
+
+    var funDownload = function(domImg, filename) {
+      // 创建隐藏的可下载链接
+      var eleLink = document.createElement("a");
+      eleLink.download = filename;
+      eleLink.style.display = "none";
+      // 图片转base64地址
+      var canvas = document.createElement("canvas");
+      var context = canvas.getContext("2d");
+      var width = domImg.naturalWidth;
+      var height = domImg.naturalHeight;
+      context.drawImage(domImg, 0, 0);
+      // 如果是PNG图片，则canvas.toDataURL('image/png')
+      eleLink.href = canvas.toDataURL("image/jpeg");
+      // 触发点击
+      document.body.appendChild(eleLink);
+      eleLink.click();
+      // 然后移除
+      document.body.removeChild(eleLink);
+    };
   </script>
 </html>
