@@ -1,36 +1,37 @@
-function Promi(executor) {
-  let _this = this;
-  _this.$$status = "pending";
-  _this.failCallBack = undefined;
-  _this.successCallback = undefined;
-  _this.error = undefined;
-  executor(resolve.bind(_this), reject.bind(_this));
+function Promise(executor) {
+  // let this = this;
+  this.status = "pending";
+  this.failCallBack = undefined;
+  this.successCallback = undefined;
+  this.error = undefined;
+  executor(resolve.bind(this), reject.bind(this));
+
   function resolve(params) {
-    if (_this.$$status === "pending") {
-      _this.$$status = "success";
-      _this.successCallback(params);
+    if (this.status === "pending") {
+      this.status = "success";
+      this.successCallback(params);
     }
   }
+
   function reject(params) {
-    if (_this.$$status === "pending") {
-      _this.$$status = "fail";
-      _this.failCallBack(params);
+    if (this.status === "pending") {
+      this.status = "fail";
+      this.failCallBack(params);
     }
   }
 }
 
-Promi.prototype.then = function(full, fail) {
+Promise.prototype.then = function (full, fail) {
   this.successCallback = full;
   this.failCallBack = fail;
 };
 
 // 测试代码
-new Promi(function(res, rej) {
-  setTimeout(_ => res("成功"), 30);
-}).then(res => console.log(res));
+new Promise(function (res, rej) {
+  setTimeout((_) => res("成功"), 30);
+}).then((res) => console.log(res));
 
-
-// 完整Promisem模型 setTimout替代Promise.then
+// 完整Promise模型 setTimeout替代Promise.then
 // 原文链接：https://github.com/LuckyWinty/fe-weekly-questions/issues/20
 
 function Promise(fn) {
@@ -38,7 +39,7 @@ function Promise(fn) {
   let value = null;
   const callbacks = [];
 
-  this.then = function(onFulfilled, onRejected) {
+  this.then = function (onFulfilled, onRejected) {
     return new Promise((resolve, reject) => {
       handle({
         onFulfilled,
@@ -49,15 +50,15 @@ function Promise(fn) {
     });
   };
 
-  this.catch = function(onError) {
+  this.catch = function (onError) {
     this.then(null, onError);
   };
 
-  this.finally = function(onDone) {
+  this.finally = function (onDone) {
     this.then(onDone, onError);
   };
 
-  this.resolve = function(value) {
+  this.resolve = function (value) {
     if (value && value instanceof Promise) {
       return value;
     }
@@ -67,23 +68,23 @@ function Promise(fn) {
       typeof value.then === "function"
     ) {
       const { then } = value;
-      return new Promise(resolve => {
+      return new Promise((resolve) => {
         then(resolve);
       });
     }
     if (value) {
-      return new Promise(resolve => resolve(value));
+      return new Promise((resolve) => resolve(value));
     }
-    return new Promise(resolve => resolve());
+    return new Promise((resolve) => resolve());
   };
 
-  this.reject = function(value) {
+  this.reject = function (value) {
     return new Promise((resolve, reject) => {
       reject(value);
     });
   };
 
-  this.all = function(arr) {
+  this.all = function (arr) {
     const args = Array.prototype.slice.call(arr);
     return new Promise((resolve, reject) => {
       if (args.length === 0) return resolve([]);
@@ -96,7 +97,7 @@ function Promise(fn) {
             if (typeof then === "function") {
               then.call(
                 val,
-                val => {
+                (val) => {
                   res(i, val);
                 },
                 reject,
@@ -118,7 +119,7 @@ function Promise(fn) {
     });
   };
 
-  this.race = function(values) {
+  this.race = function (values) {
     return new Promise((resolve, reject) => {
       for (let i = 0, len = values.length; i < len; i++) {
         values[i].then(resolve, reject);
@@ -195,3 +196,31 @@ function Promise(fn) {
   }
   fn(resolve, reject);
 }
+
+// Promise 队列执行
+
+
+function queue(arr) {
+  var sequence = Promise.resolve();
+  arr.forEach(function (item) {
+    sequence = sequence.then(item);
+  });
+  return sequence;
+}
+
+
+// 执行队列
+queue([a, b, c]).then((data) => {
+  console.log(data); // abc
+});
+
+async function queue(arr) {
+  let res = null;
+  for (let promise of arr) { // forEach 只支持处理同步代码，此处 使用 for...of 是因为 for...of 是使用迭代器的方式遍历
+    res = await promise(res);
+  }
+  return await res;
+}
+queue([a, b, c]).then((data) => {
+  console.log(data); // abc
+});
