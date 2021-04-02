@@ -196,31 +196,3 @@ function Promise(fn) {
   }
   fn(resolve, reject);
 }
-
-// Promise 队列执行
-
-
-function queue(arr) {
-  var sequence = Promise.resolve();
-  arr.forEach(function (item) {
-    sequence = sequence.then(item);
-  });
-  return sequence;
-}
-
-
-// 执行队列
-queue([a, b, c]).then((data) => {
-  console.log(data); // abc
-});
-
-async function queue(arr) {
-  let res = null;
-  for (let promise of arr) { // forEach 只支持处理同步代码，此处 使用 for...of 是因为 for...of 是使用迭代器的方式遍历
-    res = await promise(res);
-  }
-  return await res;
-}
-queue([a, b, c]).then((data) => {
-  console.log(data); // abc
-});

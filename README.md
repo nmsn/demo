@@ -31,7 +31,8 @@
 - drag 进度条
 - drag 元素
 - node 实现剪刀石头布
-- Promise
+- Promise 实现
+- Promise 队列执行
 - react setState 简单实现
 - this 多种绑定形式
 - vue 双向绑定简单实现
