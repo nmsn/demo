@@ -37,5 +37,6 @@
 - this 多种绑定形式
 - vue 双向绑定简单实现
 - vue 响应式实现
+- co-generator实现自动执行
 
 
