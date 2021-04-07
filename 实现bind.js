@@ -1,26 +1,16 @@
-Function.prototype.bind2 = function(context) {
+Function.prototype.bind = function (context) {
   if (typeof this !== "function") {
-    throw new Error(
-      "Function.prototype.bind - what is trying to be bound is not callable",
-    );
+    throw new TypeError("Error");
   }
+  var _this = this;
+  // 第 0 位是this，所以得从第一位开始裁剪
+  var args = [...arguments].slice(1);
 
-  var self = this; // 调用函数
-  var args = Array.prototype.slice.call(arguments, 1); // arguments类数组，不能直接使用slice方法
-
-  var fNOP = function() {};
-
-  var fBound = function() {
-    var bindArgs = Array.prototype.slice.call(arguments);
-
-    return self.apply(
-      this instanceof fNOP ? this : context,
-      args.concat(bindArgs),
-    );
+  return function F() {
+    // 因为返回了一个函数，当使用 new F() 执行时，this 重新绑定，所以需要判断
+    if (this instanceof F) {
+      return new _this(...args, ...arguments);
+    }
+    return _this.apply(context, args.concat(...arguments));
   };
-  
-  // TODO 意义
-  fNOP.prototype = this.prototype;
-  fBound.prototype = new fNOP();
-  return fBound;
 };
