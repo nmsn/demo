@@ -38,5 +38,6 @@
 - vue 响应式实现
 - co-generator实现自动执行
 - compose 函数实现
+- instanceof 实现
 
 
