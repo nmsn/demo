@@ -1,4 +1,13 @@
-// 最简单，但不能拷贝其他引用类型，拷贝函数，循环引用等情况
+/**
+ * JSON 反序列化
+ * 最简单，但不能拷贝其他引用类型，拷贝函数，循环引用等情况
+ * 1. 不支持函数
+ * 2. 不支持 undefined（支持 null）
+ * 3. 不支持循环引用
+ * 4. 不支持 Date，会变成 ISO8601 格式的字符串
+ * 5. 不支持正则表达式
+ * 6. 不支持 Symbol
+ */
 JSON.parse(JSON.stringify());
 
 // 浅拷贝
@@ -128,7 +137,7 @@ function clone(target, map = new WeakMap()) {
 
   // 克隆set
   if (type === setTag) {
-    target.forEach(value => {
+    target.forEach((value) => {
       cloneTarget.add(clone(value, map));
     });
     return cloneTarget;
