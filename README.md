@@ -6,38 +6,46 @@
 
 ## 目录
 
-- 不定量变量函数
-- 底部footer 布局
-- 红绿灯
-- 计算器
-- 柯里化
-- 懒加载
-- 轮播图
-- 清除浮动
-- 深浅拷贝
-- 圣杯布局
-- apply 实现
-- bind 实现
-- call 实现
-- 数组去重
-- 双飞翼布局
-- 水印
-- 文件上传进度条
-- 洋葱模型实现
-- 遮罩层
-- canvas实现图片压缩
-- clipboard 剪贴板
-- drag 进度条
-- drag 元素
-- node 实现剪刀石头布
-- Promise 实现
-- Promise 队列执行
-- react setState 简单实现
-- this 多种绑定形式
-- vue 双向绑定简单实现
-- vue 响应式实现
-- co-generator实现自动执行
-- compose 函数实现
-- instanceof 实现
+```
+|-- Promise.js
+|-- PromiseAjax.js
+|-- Promise队列执行.js
+|-- README.md
+|-- canvas实现图片压缩.html
+|-- clipboard.html
+|-- co-generator实现自动执行.js
+|-- compose实现.js
+|-- drag元素(不超过父级容器).html
+|-- drag进度条.html
+|-- instanceof实现.js
+|-- node剪刀石头布.js
+|-- reactsetState实现.js
+|-- this多种绑定.js
+|-- vue双向绑定.html
+|-- vue响应式实现.js
+|-- 不定量变量函数.html
+|-- 双飞翼布局.html
+|-- 圣杯布局.html
+|-- 圣杯布局2.html
+|-- 实现apply.js
+|-- 实现bind.js
+|-- 实现call.js
+|-- 底部footer布局.html
+|-- 懒加载.html
+|-- 懒加载2.html
+|-- 数组去重.js
+|-- 文件上传进度条.html
+|-- 柯里化.js
+|-- 水印.html
+|-- 洋葱模型实现.js
+|-- 深浅拷贝.js
+|-- 清除浮动.html
+|-- 红绿灯.html
+|-- 计算器.html
+|-- 轮播图.html
+|-- 遮罩层-boxshadow实现.html
+|-- 遮罩层-伪元素.html
+|-- 遮罩层-创建额外元素.html
+```
 
 
