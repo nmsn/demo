@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title></title>
+    <script type="application/javascript">
+      function delrow() {
+        var table = document.getElementById("mytable");
+        if (table.rows.length > 0) {
+          var row = table.rows[0];
+          var rangeObj = document.createRange();
+          rangeObj.setStartBefore(row);
+          rangeObj.setEndAfter(row);
+          // rangeObj.deleteContents();
+          console.log(rangeObj);
+        }
+      }
+    </script>
+  </head>
+  <body>
+    <table id="mytable" border="1">
+      <tr>
+        <td>内容1</td>
+        <td>内容2</td>
+      </tr>
+      <tr>
+        <td>内容3</td>
+        <td>内容4</td>
+      </tr>
+    </table>
+    <button onclick="delrow()">删除第一行</button>
+  </body>
+</html>
