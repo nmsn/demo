@@ -37,6 +37,7 @@ const funcTag = "[object Function]";
 
 const deepTag = [mapTag, setTag, arrayTag, objectTag, argsTag];
 
+// 性能 while > for > for in
 function forEach(array, iteratee) {
   let index = -1;
   const length = array.length;
