@@ -18,7 +18,9 @@
 |-- drag元素(不超过父级容器).html
 |-- drag进度条.html
 |-- instanceof实现.js
+|-- isPrime.js
 |-- node剪刀石头布.js
+|-- range使用案例.html
 |-- reactsetState实现.js
 |-- this多种绑定.js
 |-- vue双向绑定.html
