@@ -88,3 +88,18 @@ function _doSomething(reg, phone, callback) {
 const doSomething = curry(_doSomething)(19956526362); // 这里就是提前返回电话号码是否正确了
 doSomething(callback1); // 这里就是延迟执行
 doSomething(callback2);
+
+// 无限累加
+function sum (...args) {
+  const f = (...rest) => sum(...args, ...rest)
+  f.valueOf = () => args.reduce((x, y) => x + y, 0)
+  return f
+}
+
+const a = sum(1, 2, 3).valueOf() //6
+const b = sum(2, 3)(2).valueOf() //7
+const c = sum(1)(2)(3)(4).valueOf() //10
+const d = sum(2)(4, 1)(2).valueOf() //9
+const e = sum(1)(2)(3)(4)(5)(6).valueOf() // 21
+
+console.log(a, b, c, d, e)
