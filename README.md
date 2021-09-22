@@ -23,6 +23,7 @@
 |-- instanceof实现.js
 |-- isPrime.js
 |-- node剪刀石头布.js
+|-- queryString.js
 |-- range使用案例.html
 |-- reactsetState实现.js
 |-- reduce实现.js
