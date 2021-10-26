@@ -1,10 +1,11 @@
-function Promise(executor) {
+// 1.
+function Promise(fn) {
   // let this = this;
   this.status = "pending";
   this.failCallBack = undefined;
   this.successCallback = undefined;
   this.error = undefined;
-  executor(resolve.bind(this), reject.bind(this));
+  fn(resolve.bind(this), reject.bind(this));
 
   function resolve(params) {
     if (this.status === "pending") {
@@ -34,6 +35,8 @@ new Promise(function (res, rej) {
 // 完整Promise模型 setTimeout替代Promise.then
 // 原文链接：https://github.com/LuckyWinty/fe-weekly-questions/issues/20
 
+
+// 2.
 function Promise(fn) {
   let state = "pending";
   let value = null;
@@ -62,6 +65,7 @@ function Promise(fn) {
     if (value && value instanceof Promise) {
       return value;
     }
+
     if (
       value &&
       typeof value === "object" &&
@@ -72,9 +76,11 @@ function Promise(fn) {
         then(resolve);
       });
     }
+
     if (value) {
       return new Promise((resolve) => resolve(value));
     }
+
     return new Promise((resolve) => resolve());
   };
 
@@ -133,14 +139,15 @@ function Promise(fn) {
       return;
     }
 
-    const cb =
-      state === "fulfilled" ? callback.onFulfilled : callback.onRejected;
+    const cb = state === "fulfilled" ? callback.onFulfilled : callback.onRejected;
+
     const next = state === "fulfilled" ? callback.resolve : callback.reject;
 
     if (!cb) {
       next(value);
       return;
     }
+
     try {
       const ret = cb(value);
       next(ret);
@@ -148,6 +155,7 @@ function Promise(fn) {
       callback.reject(e);
     }
   }
+
   function resolve(newValue) {
     const fn = () => {
       if (state !== "pending") return;
@@ -171,6 +179,7 @@ function Promise(fn) {
 
     setTimeout(fn, 0);
   }
+
   function reject(error) {
     const fn = () => {
       if (state !== "pending") return;
@@ -188,11 +197,83 @@ function Promise(fn) {
     };
     setTimeout(fn, 0);
   }
+
   function handelCb() {
     while (callbacks.length) {
       const fn = callbacks.shift();
       handle(fn);
     }
   }
+
   fn(resolve, reject);
+}
+
+
+// 3.
+
+class Prom {
+  static resolve (value) {
+    if (value && value.then) {
+      return value 
+    }
+    return new Prom(resolve => resolve(value))
+  }
+
+  constructor (fn) {
+    this.value = undefined
+    this.reason = undefined
+    this.status = 'PENDING'
+
+    // 维护一个 resolve/pending 的函数队列
+    this.resolveFns = []
+    this.rejectFns = []
+
+    const resolve = (value) => {
+      // 注意此处的 setTimeout
+      setTimeout(() => {
+        this.status = 'RESOLVED'
+        this.value = value
+        this.resolveFns.forEach(({ fn, resolve: res, reject: rej }) => res(fn(value)))
+      })
+    }
+
+    const reject = (e) => {
+      setTimeout(() => {
+        this.status = 'REJECTED'
+        this.reason = e
+        this.rejectFns.forEach(({ fn, resolve: res, reject: rej }) => rej(fn(e)))
+      })
+    }
+
+    fn(resolve, reject)
+  }
+
+
+  then (fn) {
+    if (this.status === 'RESOLVED') {
+      const result = fn(this.value)
+      // 需要返回一个 Promise
+      // 如果状态为 resolved，直接执行
+      return Prom.resolve(result)
+    }
+    if (this.status === 'PENDING') {
+      // 也是返回一个 Promise
+      return new Prom((resolve, reject) => {
+        // 推进队列中，resolved 后统一执行
+        this.resolveFns.push({ fn, resolve, reject }) 
+      })
+    }
+  }
+
+  catch (fn) {
+    if (this.status === 'REJECTED') {
+      const result = fn(this.value)
+      return Prom.resolve(result)
+    }
+    if (this.status === 'PENDING') {
+      return new Prom((resolve, reject) => {
+        this.rejectFns.push({ fn, resolve, reject }) 
+      })
+    }
+  }
 }
