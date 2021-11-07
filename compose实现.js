@@ -12,3 +12,14 @@ export default function compose(...funcs) {
   // 若有多个函数，那么调用 reduce 方法来实现函数的组合
   return funcs.reduce((a, b) => (...args) => a(b(...args)))
 }
+
+// 核心处理逻辑为
+
+function compose(...fns) {
+  /** 
+   * 此时是从右向左执行的顺序
+   * 
+   * 如果需要倒置顺序 调换 a b 函数的执行顺序
+   *  */ 
+  fns.reduce( (a, b) => (...args) => a(b(...args)));
+}
