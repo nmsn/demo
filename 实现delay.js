@@ -7,6 +7,8 @@ function delay(func, seconds, ...args) {
 }
 
 console.log(new Date());
+
+
 delay(
   (str) => {
     console.log(str, new Date());
