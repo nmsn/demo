@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <!-- css 方法 -->
+    <style>
+      span {
+        user-select: none;
+      }
+    </style>
+  </head>
+  <body>
+    <span>测试文案</span>
+  </body>
+  <!-- js 方法 -->
+  <script>
+    document.body.onselectstart = (e) => {
+      e.preventDefault();
+    };
+
+    document.body.oncopy = (e) => {
+      e.preventDefault();
+    };
+  </script>
+</html>
