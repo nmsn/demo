@@ -3,17 +3,17 @@
 const request = new XMLHttpRequest(); // 新建XMLHttpRequest对象
 
 request.onreadystatechange = function () {
-  // 状态发生变化时，函数被回调
-  if (request.readyState == 4) {
-    // 成功完成
-    // 判断响应结果:
-    if (request.status == 200) {
-      // 成功，通过responseText拿到响应的文本
-      console.log(request.responseText);
-    } else {
-      // 失败，根据响应码判断失败原因:
-      console.log(request.status);
-    }
+  // 状态发生变化时，函数被回调
+  if (request.readyState == 4) {
+    // 成功完成
+    // 判断响应结果:
+    if (request.status == 200) {
+      // 成功，通过responseText拿到响应的文本
+      console.log(request.responseText);
+    } else {
+      // 失败，根据响应码判断失败原因:
+      console.log(request.status);
+    }
   }
 };
 
@@ -25,30 +25,29 @@ request.onreadystatechange = function () {
 request.open("GET", "/api/categories", true);
 request.send();
 
-
-
 // PromiseAjax
-const ajax = function({ method, url, params, contentType }) {
+const ajax = function ({ method, url, params, contentType }) {
   const xhr = new XMLHttpRequest();
-  
+
   const formData = new FormData();
-  Object.keys(params).forEach((key) => {
-    formData.append(key, params[key]);
+  Object.keys(params).forEach((key) => {
+    formData.append(key, params[key]);
   });
 
-  const promise = new Promise(function(resolve, reject) {
-
+  const promise = new Promise(function (resolve, reject) {
     try {
       xhr.open(method, url, false);
       xhr.setRequestHeader("Content-Type", contentType);
       xhr.setRequestHeader("Accept", "application/json");
-      xhr.onreadystatechange = function() {
+      xhr.onreadystatechange = function () {
         if (this.readyState !== 4) {
           return;
         }
         if (this.status === 200) {
+          // 区别1: 请求成功
           resolve(this.response);
         } else {
+          // 区别2: 请求失败
           reject(new Error(this.statusText));
         }
       };
