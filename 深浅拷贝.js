@@ -1,3 +1,38 @@
+// 浅拷贝
+
+function clone(target) {
+  let cloneTarget = {};
+  for (const key in target) {
+    cloneTarget[key] = target[key];
+  }
+  return cloneTarget;
+}
+
+/**
+ * （1）Object.assign
+ */
+
+let target = {a: 1};
+let object2 = {b: 2};
+let object3 = {c: 3};
+Object.assign(target,object2,object3);
+console.log(target);  // {a: 1, b: 2, c: 3}
+
+/**
+ * （2）扩展运算符
+ */
+
+let obj1 = {a:1,b:{c:1}}
+let obj2 = {...obj1};
+obj1.a = 2;
+console.log(obj1); //{a:2,b:{c:1}}
+console.log(obj2); //{a:1,b:{c:1}}
+obj1.b.c = 2;
+console.log(obj1); //{a:2,b:{c:2}}
+console.log(obj2); //{a:1,b:{c:2}}
+
+// 深拷贝
+
 /**
  * JSON 反序列化
  * 最简单，但不能拷贝其他引用类型，拷贝函数，循环引用等情况
@@ -7,17 +42,28 @@
  * 4. 不支持 Date，会变成 ISO8601 格式的字符串
  * 5. 不支持正则表达式
  * 6. 不支持 Symbol
+ * 
+ * 更详细的实例见 https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON/stringify
+ * 不知道为什么没有描述 Promise 类型，chrome 中属性会消失
  */
-JSON.parse(JSON.stringify());
+ JSON.parse(JSON.stringify());
+ 
+// 简易深拷贝
+function deepCopy(object) {
+  if (!object || typeof object !== "object") return;
 
-// 浅拷贝
-function clone(target) {
-  let cloneTarget = {};
-  for (const key in target) {
-    cloneTarget[key] = target[key];
+  let newObject = Array.isArray(object) ? [] : {};
+
+  for (let key in object) {
+    if (object.hasOwnProperty(key)) {
+      newObject[key] =
+        typeof object[key] === "object" ? deepCopy(object[key]) : object[key];
+    }
   }
-  return cloneTarget;
+
+  return newObject;
 }
+
 
 // 完整深拷贝
 const mapTag = "[object Map]";
@@ -179,40 +225,40 @@ function clone(target, map = new WeakMap()) {
  * 深拷贝关注点:
  * 1. JavaScript内置对象的复制: Set、Map、Date、Regex等
  * 2. 循环引用问题
- * @param {*} object 
- * @returns 
+ * @param {*} object
+ * @returns
  */
- function deepClone(source, memory) {
+function deepClone(source, memory) {
   const isPrimitive = (value) => {
-    return /Number|Boolean|String|Null|Undefined|Symbol|Function/.test(Object.prototype.toString.call(value));
-  }
+    return /Number|Boolean|String|Null|Undefined|Symbol|Function/.test(
+      Object.prototype.toString.call(value),
+    );
+  };
   let result = null;
 
   memory || (memory = new WeakMap());
   // 原始数据类型及函数
   if (isPrimitive(source)) {
-    console.log('current copy is primitive', source);
+    console.log("current copy is primitive", source);
     result = source;
   }
   // 数组
   else if (Array.isArray(source)) {
-    result = source.map(value => deepClone(value, memory));
+    result = source.map((value) => deepClone(value, memory));
   }
   // 内置对象Date、Regex
-  else if (Object.prototype.toString.call(source) === '[object Date]') {
+  else if (Object.prototype.toString.call(source) === "[object Date]") {
     result = new Date(source);
-  }
-  else if (Object.prototype.toString.call(source) === '[object Regex]') {
+  } else if (Object.prototype.toString.call(source) === "[object Regex]") {
     result = new RegExp(source);
   }
   // 内置对象Set、Map
-  else if (Object.prototype.toString.call(source) === '[object Set]') {
+  else if (Object.prototype.toString.call(source) === "[object Set]") {
     result = new Set();
     for (const value of source) {
       result.add(deepClone(value, memory));
     }
-  }
-  else if (Object.prototype.toString.call(source) === '[object Map]') {
+  } else if (Object.prototype.toString.call(source) === "[object Map]") {
     result = new Map();
     for (const [key, value] of source.entries()) {
       result.set(key, deepClone(value, memory));
@@ -225,7 +271,7 @@ function clone(target, map = new WeakMap()) {
     } else {
       result = Object.create(null);
       memory.set(source, result);
-      Object.keys(source).forEach(key => {
+      Object.keys(source).forEach((key) => {
         const value = source[key];
         result[key] = deepClone(value, memory);
       });
@@ -233,3 +279,4 @@ function clone(target, map = new WeakMap()) {
   }
   return result;
 }
+˜
