@@ -1,17 +1,11 @@
-Function.prototype.apply = function (context, arr) {
-  if (typeof this !== "function") {
-    console.error("type error");
-  }
-  const context = Object(context) || window;
+Function.prototype.myApply = function (obj, args) {
+  const context = obj || window;
+
   context.fn = this;
 
-  var result;
-  if (!arr) {
-    result = context.fn();
-  } else {
-    result = context.fn(...arr);
-  }
+  const result = context.fn(...args);
 
   delete context.fn;
+
   return result;
 };
