@@ -1,32 +1,52 @@
 // 函数节流的实现
 // 时间戳版
 function throttle(fn, delay) {
-  let curTime = Date.now();
+  let pre = Date.now();
 
-  return function () {
-    let context = this,
-      args = [...arguments],
-      nowTime = Date.now();
+  return function (...args) {
+    let now = Date.now();
 
-    // 如果两次时间间隔超过了指定时间，则执行函数。
-    if (nowTime - curTime >= delay) {
-      curTime = Date.now();
-      return fn.apply(context, args);
+    if (now - pre > delay) {
+      pre = Date.now();
+      fn.apply(this, args);
     }
   };
 }
 
 // 定时器版
-function throttle(fun, wait) {
-  let timeout = null;
-  return function () {
-    let context = this;
-    let args = [...arguments];
-    if (!timeout) {
-      timeout = setTimeout(() => {
-        fun.apply(context, args);
-        timeout = null;
-      }, wait);
+function throttle(fn, delay) {
+  let timer = null;
+
+  return function (args) {
+    if (!timer) {
+      timer = setTimeout(() => {
+        timer = null;
+        fn.apply(this, args);
+      }, delay);
+    }
+  };
+}
+
+// 立即执行
+
+function throttle(fn, delay, imme) {
+  let timer = null;
+
+  return function (args) {
+    if (!timer) {
+      if (imme) {
+        fn.apply(this, args);
+        timer = setTimeout(() => {
+          timer = null;
+        }, delay);
+      }
+
+      if (!imme) {
+        timer = setTimeout(() => {
+          timer = null;
+          fn.apply(this, args);
+        }, delay);
+      }
     }
   };
 }
