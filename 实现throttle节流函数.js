@@ -28,7 +28,6 @@ function throttle(fn, delay) {
 }
 
 // 立即执行
-
 function throttle(fn, delay, imme) {
   let timer = null;
 
